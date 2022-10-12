@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class ShopItem {
+export class ShopItem extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -26,4 +26,14 @@ export class ShopItem {
         default: () => 'CURRENT_TIMESTAMP'
     })
     createdAt: Date;
+
+    @Column({
+        default: 0,
+    })
+    boughtCounter: number;
+
+    @Column({
+        default: false,
+    })
+    wasEverBought: boolean;
 }

@@ -17,10 +17,14 @@ export class BasketService {
     }
 
     getTotalPrice() {
-        return this.basket.reduce((accumulator: number, current: BasketItem) => {
-            const price = this.shopService.getPrice(current.name);
-            return accumulator + (price * current.amount);
-        }, 0);
+        let totalPrice = 0;
+
+        this.basket.forEach(async (current) => {
+            const price = await this.shopService.getPrice(current.name);
+            totalPrice += price * current.amount;
+        });
+
+        return totalPrice;
     }
 
     addItemToBasket(item: BasketItem): Response {
@@ -38,6 +42,8 @@ export class BasketService {
         } else {
             this.basket.push(item);
         }
+
+        this.shopService.addBoughtCounter(item.id, item.amount);
 
         return {
             isSuccess: true,

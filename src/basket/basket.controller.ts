@@ -16,8 +16,8 @@ export class BasketController {
     }
 
     @Get("/total-price")
-    getTotalPrice(): number {
-        return this.basketService.getTotalPrice();
+    async getTotalPrice(): Promise<number> {
+        return await this.basketService.getTotalPrice();
     }
 
     @Post("/")
