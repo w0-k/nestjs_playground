@@ -1,25 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { NewShopItem } from 'src/dto/new-shop-item.dto';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 
 import { ItemInterface } from "../interfaces/shop";
 import { ShopItem } from './shop-item.entity';
 
 @Injectable()
 export class ShopService {
-    items: ItemInterface[];
-
-    constructor(
-        @InjectRepository(ShopItem) private shopItemRepository : Repository<ShopItem>
-    ) {}
-
     async getItems(): Promise<ItemInterface[]> {
-        return await this.shopItemRepository.find();
+        return await ShopItem.find();
     }
 
     async getItem(id: string): Promise<ShopItem> {
-        return await this.shopItemRepository.findOneByOrFail({ id });
+        return await ShopItem.findOneByOrFail({ id });
     }
 
     async createItem(newShopItem: NewShopItem): Promise<ShopItem> {
@@ -28,18 +21,18 @@ export class ShopService {
         item.description = newShopItem.description;
         item.price = newShopItem.price;
 
-        return await this.shopItemRepository.save(item);
+        return await item.save();
     }
 
     async removeItem(id: string): Promise<DeleteResult> {
-        return await this.shopItemRepository.delete(id);
+        return await ShopItem.delete(id);
     }
 
     async addBoughtCounter(id: string, amount: number) {
-        await this.shopItemRepository.update(id, { wasEverBought: true });
-        const item = await this.shopItemRepository.findOneByOrFail({ id });
+        await ShopItem.update(id, { wasEverBought: true });
+        const item = await ShopItem.findOneByOrFail({ id });
         item.boughtCounter += amount;
-        await this.shopItemRepository.save(item);
+        await item.save();
     }
 
     async getPrice(name: string): Promise<number> {
