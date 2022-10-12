@@ -8,18 +8,6 @@ import { ShopModule } from './shop/shop.module';
 
 import { dbConfiguration } from "./config/db.config";
 
-// const dbConfig: TypeOrmModuleOptions = {
-//   type: 'mysql',
-//   host: 'localhost',
-//   port: 3306,
-//   username: 'root',
-//   password: 'password',
-//   database: 'shop',
-//   entities: ["dist/**/**.entity{.ts,.js}"],
-//   logging: true,
-//   migrations: ["dist/migration/*.js"]
-// };
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -37,14 +25,3 @@ import { dbConfiguration } from "./config/db.config";
   providers: [AppService],
 })
 export class AppModule {}
-
-// @Module({
-//   imports: [
-//     TypeOrmModule.forRoot(dbConfig),
-//     BasketModule,
-//     ShopModule,
-//   ],
-//   controllers: [AppController],
-//   providers: [AppService],
-// })
-// export class AppModule {}
