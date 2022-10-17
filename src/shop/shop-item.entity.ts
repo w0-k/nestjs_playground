@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { ShopItemDetails } from "./shop-item-details.entity";
+import { ShopSet } from "./shop-set.entity";
 
 @Entity()
 export class ShopItem extends BaseEntity {
@@ -6,19 +8,18 @@ export class ShopItem extends BaseEntity {
     id: string;
 
     @Column({
-        length: 20,
+        length: 50,
     })
     name: string;
 
     @Column({
         type: "longtext",
-        default: "brak"
     })
     description: string;
 
     @Column({
         type: "float",
-        precision: 6,
+        precision: 4,
         scale: 2, 
     })
     price: number;
@@ -37,4 +38,19 @@ export class ShopItem extends BaseEntity {
         default: false,
     })
     wasEverBought: boolean;
+
+    @OneToOne(type => ShopItemDetails, { eager: true })
+    @JoinColumn()
+    details: ShopItemDetails;
+
+    /* Subproduct */
+    @ManyToOne(type => ShopItem, entity => entity.subShopItems)
+    mainShopItem: ShopItem;
+
+    @OneToMany(type => ShopItem, entity => entity.mainShopItem)
+    subShopItems: ShopItem[];
+
+    @ManyToMany(type => ShopSet, entity => entity.items/*, { eager: true }*/)
+    @JoinTable()
+    sets: ShopSet[];
 }

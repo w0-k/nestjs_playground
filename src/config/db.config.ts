@@ -7,10 +7,13 @@ const dbInfo = {
     ...dbCredentials,
     entities: ["dist/**/**.entity{.ts,.js}"],
     logging: true,
+    synchronize: true,
+    /** 
     migrations: ["dist/migration/*.{.ts,js}"],
     cli: {
         migrationsDir: 'src/migrations'
     },
+    */
 };
 
 export const dbConfiguration = registerAs('database', () => {

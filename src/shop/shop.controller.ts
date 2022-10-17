@@ -5,6 +5,7 @@ import {
     GetListOfProductsResponse,
     GetOneProductResponse,
     CreateProductResponse,
+    GetPaginatedListOfProductsResponse,
 } from "../interfaces/shop";
 import { NewShopItem } from 'src/dto/new-shop-item.dto';
 
@@ -13,11 +14,21 @@ export class ShopController {
     constructor(
         private readonly shopService: ShopService
     ) {}
-
-    @Get("/")
-    async getCartItems(): Promise<GetListOfProductsResponse> {
-        return await this.shopService.getItems();
+    
+    @Get("/find/:searchTerm")
+    async findItem(
+        @Param("searchTerm") searchTerm: string
+    ): Promise<GetListOfProductsResponse> {
+        return this.shopService.findProducts(searchTerm);
     }
+    
+    @Get("/:pageNumber")
+    async getCartItems(
+        @Param("pageNumber") pageNumber: string,
+    ): Promise<GetPaginatedListOfProductsResponse> {
+        return await this.shopService.getItems(Number(pageNumber));
+    }
+
 
     @Get("/:id")
     async getOneCartItem(
