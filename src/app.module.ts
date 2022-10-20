@@ -7,6 +7,7 @@ import { BasketModule } from './basket/basket.module';
 import { ShopModule } from './shop/shop.module';
 
 import { dbConfiguration } from "./config/db.config";
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { dbConfiguration } from "./config/db.config";
     }),
     BasketModule,
     ShopModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

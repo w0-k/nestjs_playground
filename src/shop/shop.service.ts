@@ -75,7 +75,7 @@ export class ShopService {
     }
 
     async addBoughtCounter(id: string, amount: number) {
-        await ShopItem.update(id, { wasEverBought: true });
+        // await ShopItem.update(id, { wasEverBought: true });
         const item = await ShopItem.findOneByOrFail({ id });
         item.boughtCounter += amount;
         await item.save();

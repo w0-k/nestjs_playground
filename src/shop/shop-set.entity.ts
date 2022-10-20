@@ -11,7 +11,7 @@ export class ShopSet extends BaseEntity {
     })
     name: string;
 
-    @ManyToMany(type => ShopItem, entity => entity.sets)
-    items: ShopItem[];
+    // @ManyToMany(type => ShopItem, entity => entity.sets)
+    // items: ShopItem[];
 }
  
