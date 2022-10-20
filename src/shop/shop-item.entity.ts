@@ -39,18 +39,18 @@ export class ShopItem extends BaseEntity {
     })
     wasEverBought: boolean;
 
-    @OneToOne(type => ShopItemDetails, { eager: true })
-    @JoinColumn()
-    details: ShopItemDetails;
+    // @OneToOne(type => ShopItemDetails, { eager: true })
+    // @JoinColumn()
+    // details: ShopItemDetails;
 
-    /* Subproduct */
-    @ManyToOne(type => ShopItem, entity => entity.subShopItems)
-    mainShopItem: ShopItem;
+    // /* Subproduct */
+    // @ManyToOne(type => ShopItem, entity => entity.subShopItems)
+    // mainShopItem: ShopItem;
 
-    @OneToMany(type => ShopItem, entity => entity.mainShopItem)
-    subShopItems: ShopItem[];
+    // @OneToMany(type => ShopItem, entity => entity.mainShopItem)
+    // subShopItems: ShopItem[];
 
-    @ManyToMany(type => ShopSet, entity => entity.items/*, { eager: true }*/)
-    @JoinTable()
-    sets: ShopSet[];
+    // @ManyToMany(type => ShopSet, entity => entity.items/*, { eager: true }*/)
+    // @JoinTable()
+    // sets: ShopSet[];
 }

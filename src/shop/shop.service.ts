@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { NewShopItem } from 'src/dto/new-shop-item.dto';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 import { GetPaginatedListOfProductsResponse } from 'src/interfaces/shop';
 import { ShopItem } from './shop-item.entity';
-import { ShopItemDetails } from './shop-item-details.entity';
+// import { ShopItemDetails } from './shop-item-details.entity';
 
 @Injectable()
 export class ShopService {
@@ -29,11 +29,23 @@ export class ShopService {
     }
     
     async findProducts(searchTerm: string): Promise<ShopItem[]> {
+        // const count = await ShopItem
+        //     .createQueryBuilder()
+        //     .select('COUNT(shop_item.id)', 'count')
+        //     .from(ShopItem, 'shop_item')
+        //     .getRawOne();
+
+        // console.log("COUNT");
+        // console.log(count);
+
         return await ShopItem
-            .createQueryBuilder("shopItem")
+            .createQueryBuilder()
             .where("shopItem.description like :searchTerm", {
                 searchTerm: `%${searchTerm}%`
             })
+            .orderBy('shopItem.price', 'ASC')
+            // .skip(2)
+            // .take(2)
             .getMany();
     }
 
@@ -45,15 +57,15 @@ export class ShopService {
 
         await item.save();
 
-        const details = new ShopItemDetails();
-        details.color = "green";
-        details.width = 20;
+        // const details = new ShopItemDetails();
+        // details.color = "green";
+        // details.width = 20;
 
-        await details.save();
+        // await details.save();
 
-        item.details = details;
+        // item.details = details;
 
-        await item.save();
+        // await item.save();
 
         return item;
     }
