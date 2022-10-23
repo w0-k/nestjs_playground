@@ -16,7 +16,7 @@ export class ShopService {
             take: maxOnPage,
         });
 
-        const totalPages = Math.ceil(count / maxOnPage ); 
+        const totalPages = Math.ceil(count / maxOnPage); 
         
         return {
             items,

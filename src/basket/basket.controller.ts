@@ -10,9 +10,11 @@ export class BasketController {
         private readonly basketService: BasketService
     ) {}
 
-    @Get("/")
-    getBasket(): BasketItem[] {
-        return this.basketService.getBasket();
+    @Get("/:user")
+    getBasket(
+        @Param("userId") userId: string,
+    ): BasketItem[] {
+        return this.basketService.getBasket(userId);
     }
 
     @Get("/total-price")

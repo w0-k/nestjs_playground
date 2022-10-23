@@ -3,6 +3,9 @@ import { ShopService } from '../shop/shop.service';
 import { BasketItem } from '../interfaces/basket';
 import { Response } from '../interfaces/responses';
 
+// TODO: use database for stroing items added to basket
+//       connect user with basket
+
 @Injectable()
 export class BasketService {
     basket: BasketItem[]
@@ -12,7 +15,7 @@ export class BasketService {
         this.basket = [];
     }
 
-    getBasket(): BasketItem[] {
+    getBasket(userId: string): BasketItem[] {
         return this.basket;
     }
 

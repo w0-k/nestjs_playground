@@ -27,7 +27,7 @@ export class User extends BaseEntity {
     })
     phoneNumber: number;
 
-    @OneToOne(type => Basket, { eager: true })
+    @OneToOne(type => Basket/*, { eager: true }*/)
     @JoinColumn()
     basket: Basket;
 }

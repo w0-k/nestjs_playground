@@ -4,13 +4,13 @@ import { User } from "src/user/user.entity";
 
 @Entity()
 export class Basket extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string;
 
-    @OneToOne(type => User, { eager: true})
+    @OneToOne(type => User)
     user: User;
 
-    @ManyToMany(type => ShopItem, entity => entity.baskets, { eager: true})
+    @ManyToMany(type => ShopItem, entity => entity.baskets)
     @JoinTable()
     items: ShopItem[];
 }
