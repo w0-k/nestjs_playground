@@ -27,6 +27,11 @@ export class ShopService {
     async getItem(id: string): Promise<ShopItem> {
         return await ShopItem.findOneByOrFail({ id });
     }
+
+    async getItemByName(name: string): Promise<ShopItem> {
+        const [shopItem] = await ShopItem.findBy({ name });
+        return shopItem;
+    }
     
     async findProducts(searchTerm: string): Promise<ShopItem[]> {
         // const count = await ShopItem

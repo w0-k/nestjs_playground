@@ -8,6 +8,8 @@ import { ShopModule } from './shop/shop.module';
 
 import { dbConfiguration } from "./config/db.config";
 import { UserModule } from './user/user.module';
+import { UsersController } from './users/users.controller';
+import { UsersService } from './users/users.service';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { UserModule } from './user/user.module';
     ShopModule,
     UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, UsersController],
+  providers: [AppService, UsersService],
 })
 export class AppModule {}

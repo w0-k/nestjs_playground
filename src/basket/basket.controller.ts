@@ -10,7 +10,7 @@ export class BasketController {
         private readonly basketService: BasketService
     ) {}
 
-    @Get("/:user")
+    @Get("/:userId")
     getBasket(
         @Param("userId") userId: string,
     ): BasketItem[] {
@@ -22,11 +22,12 @@ export class BasketController {
         return await this.basketService.getTotalPrice();
     }
 
-    @Post("/")
+    @Post("/:userId")
     addToBasket(
-        @Body() newItem: NewItem
-    ): Response {
-        return this.basketService.addItemToBasket(newItem);
+        @Param("userId") userId: string,
+        @Body() newItem: NewItem,
+    ): Promise<Response> {
+        return this.basketService.addItemToBasket(userId, newItem);
     }
 
     @Delete("/:index")

@@ -8,12 +8,11 @@ export class UserController {
         private readonly userService: UserService
     ) {}
 
-    @Get("/:pageNumber")
-    async users(
-        @Param("pageNumber") pageNumber: string,
-    ): Promise<GetPaginatedListOfUsersResponse> {
-        debugger;
-        return this.userService.getUsers(Number(pageNumber));
+    @Get("/:userId")
+    async getUser(
+        @Param("userId") userId: string,
+    ) {
+        return this.userService.getUser(userId);
     }
 
     @Post("/")
@@ -23,5 +22,3 @@ export class UserController {
         return this.userService.addUser(newUser);
     }
 }
-
-// TODO: write controler and service methods for adding user to database

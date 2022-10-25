@@ -2,27 +2,28 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ShopService } from '../shop/shop.service';
 import { BasketItem } from '../interfaces/basket';
 import { Response } from '../interfaces/responses';
+import { Basket } from './basket.entity';
+import { User } from 'src/user/user.entity';
+import { UserService } from 'src/user/user.service';
 
 // TODO: use database for stroing items added to basket
 //       connect user with basket
 
 @Injectable()
 export class BasketService {
-    basket: BasketItem[]
     constructor(
-        @Inject(ShopService) private shopService: ShopService
-    ) {
-        this.basket = [];
-    }
+        @Inject(ShopService) private shopService: ShopService,
+        @Inject(UserService) private userService: UserService
+    ) {}
 
     getBasket(userId: string): BasketItem[] {
-        return this.basket;
+        return [];
     }
 
     getTotalPrice() {
         let totalPrice = 0;
 
-        this.basket.forEach(async (current) => {
+        [].forEach(async (current) => {
             const price = await this.shopService.getPrice(current.name);
             totalPrice += price * current.amount;
         });
@@ -30,36 +31,52 @@ export class BasketService {
         return totalPrice;
     }
 
-    addItemToBasket(item: BasketItem): Response {
-        const isValidName = typeof item.name === "string" && item.name.length > 0;
-        const isValidAmount = typeof item.amount === "number" && item.amount > 0;
+    async addItemToBasket(userId: string, newItem: BasketItem): Promise<Response> {
+        const isValidName = typeof newItem.name === "string" && newItem.name.length > 0;
+        const isValidAmount = typeof newItem.amount === "number" && newItem.amount > 0;
 
-        if (!isValidName || !isValidAmount || !this.shopService.isItemAvailable(item.name)) {
+        if (!isValidName || !isValidAmount || !this.shopService.isItemAvailable(newItem.name)) {
             return { isSuccess: false };
         }
 
-        const index = this.basket.findIndex((basketItem) => basketItem.name === item.name);
-
-        if (index >= 0) {
-            this.basket[index].amount = item.amount + this.basket[index].amount;
-        } else {
-            this.basket.push(item);
+        const user = await this.userService.getUser(userId);
+        if (!user) {
+            return {
+                isSuccess: false,
+                msg: "User doesn't exist."
+            }
         }
 
-        this.shopService.addBoughtCounter(item.id, item.amount);
+        const shopItem = await this.shopService.getItemByName(newItem.name);
+        if (!shopItem) {
+            return {
+                isSuccess: false,
+                msg: "Item not available in the shop."
+            }
+        }
+
+        const basket = await Basket.findOneByOrFail({
+            id: user.basket.id
+        });
+
+        // check if item not already in the basekt
+
+        // update basket with new item
+
+        this.shopService.addBoughtCounter(newItem.id, newItem.amount);
 
         return {
             isSuccess: true,
-            index: this.basket.length - 1,
+            index: [].length - 1,
         }
     }
 
     removeItemFromBasket(index: number): Response {
-        if (!this.basket[index]) {
+        if (![][index]) {
             return { isSuccess: false };
         }
 
-        this.basket.splice(index, 1);
+        [].splice(index, 1);
 
         return { isSuccess: true };
     }
