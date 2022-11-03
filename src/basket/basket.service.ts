@@ -15,16 +15,18 @@ export class BasketService {
     ) {}
 
     async getBasket(userId: string): Promise<ShopItem[]> {
-        // const user = await User.findOneBy({ id: userId });
         const user = await User.findOneOrFail(
             { 
                 where: { id: userId },
                 relations: ["basket"]
             }
         );
-        const basketId = user.basket.id;
-        const basket = await Basket.findOneByOrFail({ id: basketId });
-        debugger;
+
+        const basket = await Basket.findOneOrFail({
+            relations: ["items"],
+            where: { id: user.basket.id },
+        });
+
         return basket.items;
     }
 
