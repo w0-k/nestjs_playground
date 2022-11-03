@@ -10,6 +10,7 @@ import { dbConfiguration } from "./config/db.config";
 import { UserModule } from './user/user.module';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
+import { BasketsModule } from './baskets/baskets.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UsersService } from './users/users.service';
     BasketModule,
     ShopModule,
     UserModule,
+    BasketsModule,
   ],
   controllers: [AppController, UsersController],
   providers: [AppService, UsersService],

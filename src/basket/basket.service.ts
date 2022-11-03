@@ -5,9 +5,7 @@ import { Response } from '../interfaces/responses';
 import { Basket } from './basket.entity';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
-
-// TODO: use database for stroing items added to basket
-//       connect user with basket
+import { ShopItem } from 'src/shop/shop-item.entity';
 
 @Injectable()
 export class BasketService {
@@ -16,11 +14,21 @@ export class BasketService {
         @Inject(UserService) private userService: UserService
     ) {}
 
-    getBasket(userId: string): BasketItem[] {
-        return [];
+    async getBasket(userId: string): Promise<ShopItem[]> {
+        // const user = await User.findOneBy({ id: userId });
+        const user = await User.findOneOrFail(
+            { 
+                where: { id: userId },
+                relations: ["basket"]
+            }
+        );
+        const basketId = user.basket.id;
+        const basket = await Basket.findOneByOrFail({ id: basketId });
+        debugger;
+        return basket.items;
     }
 
-    getTotalPrice() {
+    async getTotalPrice(): Promise<number> {
         let totalPrice = 0;
 
         [].forEach(async (current) => {
@@ -31,39 +39,36 @@ export class BasketService {
         return totalPrice;
     }
 
-    async addItemToBasket(userId: string, newItem: BasketItem): Promise<Response> {
-        const isValidName = typeof newItem.name === "string" && newItem.name.length > 0;
-        const isValidAmount = typeof newItem.amount === "number" && newItem.amount > 0;
+    private getFailureMessage = (msg: string) => ({
+        isSuccess: false,
+        msg,
+    });
 
-        if (!isValidName || !isValidAmount || !this.shopService.isItemAvailable(newItem.name)) {
-            return { isSuccess: false };
+    async addItemToBasket(userId: string, newItem: BasketItem): Promise<Response> {
+        const shopItem = await this.shopService.getItemByName(newItem.name);
+        if (!shopItem) {
+            return this.getFailureMessage("Item not available in the shop.");
         }
 
         const user = await this.userService.getUser(userId);
         if (!user) {
-            return {
-                isSuccess: false,
-                msg: "User doesn't exist."
-            }
-        }
-
-        const shopItem = await this.shopService.getItemByName(newItem.name);
-        if (!shopItem) {
-            return {
-                isSuccess: false,
-                msg: "Item not available in the shop."
-            }
+            return this.getFailureMessage("User doesn't exist.");
         }
 
         const basket = await Basket.findOneByOrFail({
             id: user.basket.id
         });
 
-        // check if item not already in the basekt
+        if (basket.items.find(item => item.name === newItem.name)) {
+            return this.getFailureMessage("Item already in the basket");
+        }
 
-        // update basket with new item
+        basket.items = [
+            ...basket.items,
+            shopItem
+        ];
 
-        this.shopService.addBoughtCounter(newItem.id, newItem.amount);
+        await basket.save();
 
         return {
             isSuccess: true,

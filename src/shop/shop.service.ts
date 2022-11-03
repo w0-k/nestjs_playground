@@ -3,7 +3,6 @@ import { NewShopItem } from 'src/dto/new-shop-item.dto';
 import { DeleteResult } from 'typeorm';
 import { GetPaginatedListOfProductsResponse } from 'src/interfaces/shop';
 import { ShopItem } from './shop-item.entity';
-// import { ShopItemDetails } from './shop-item-details.entity';
 
 @Injectable()
 export class ShopService {
@@ -11,7 +10,6 @@ export class ShopService {
         const maxOnPage = 2;
 
         const [items, count] = await ShopItem.findAndCount({
-            // relations: ["details", "sets"],
             skip: maxOnPage * (pageNumber - 1),
             take: maxOnPage,
         });
@@ -29,28 +27,16 @@ export class ShopService {
     }
 
     async getItemByName(name: string): Promise<ShopItem> {
-        const [shopItem] = await ShopItem.findBy({ name });
-        return shopItem;
+        return await ShopItem.findOneBy({ name });
     }
     
     async findProducts(searchTerm: string): Promise<ShopItem[]> {
-        // const count = await ShopItem
-        //     .createQueryBuilder()
-        //     .select('COUNT(shop_item.id)', 'count')
-        //     .from(ShopItem, 'shop_item')
-        //     .getRawOne();
-
-        // console.log("COUNT");
-        // console.log(count);
-
         return await ShopItem
             .createQueryBuilder()
             .where("shopItem.description like :searchTerm", {
                 searchTerm: `%${searchTerm}%`
             })
             .orderBy('shopItem.price', 'ASC')
-            // .skip(2)
-            // .take(2)
             .getMany();
     }
 
@@ -62,16 +48,6 @@ export class ShopService {
 
         await item.save();
 
-        // const details = new ShopItemDetails();
-        // details.color = "green";
-        // details.width = 20;
-
-        // await details.save();
-
-        // item.details = details;
-
-        // await item.save();
-
         return item;
     }
 
@@ -79,20 +55,8 @@ export class ShopService {
         return await ShopItem.delete(id);
     }
 
-    async addBoughtCounter(id: string, amount: number) {
-        // await ShopItem.update(id, { wasEverBought: true });
-        const item = await ShopItem.findOneByOrFail({ id });
-        item.boughtCounter += amount;
-        await item.save();
-    }
-
     async getPrice(name: string): Promise<number> {
         const { items } = await this.getItems();
         return items.find(item => item.name === name).price;
     } 
-
-    async isItemAvailable(itemName: string): Promise<boolean> {
-        const { items } = await this.getItems();
-        return Boolean(items.find(item => item.name === itemName));
-    }
 }

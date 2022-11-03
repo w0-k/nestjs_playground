@@ -2,7 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { GetPaginatedListOfUsersResponse } from 'src/interfaces/user';
 import { UsersService } from './users.service';
 
-@Controller('users')
+@Controller('/users')
 export class UsersController {
     constructor(
         private readonly usersService: UsersService

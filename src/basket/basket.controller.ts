@@ -11,10 +11,11 @@ export class BasketController {
     ) {}
 
     @Get("/:userId")
-    getBasket(
+    async getBasket(
         @Param("userId") userId: string,
-    ): BasketItem[] {
-        return this.basketService.getBasket(userId);
+    ): Promise<BasketItem[]> {
+        debugger;
+        return await this.basketService.getBasket(userId);
     }
 
     @Get("/total-price")
