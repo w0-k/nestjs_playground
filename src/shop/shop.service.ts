@@ -27,7 +27,13 @@ export class ShopService {
     }
 
     async getItemByName(name: string): Promise<ShopItem> {
-        return await ShopItem.findOneBy({ name });
+        const shopItem = await ShopItem.findOneBy({ name });
+
+        if (!shopItem) {
+            throw new Error("Item not available in the shop.");
+        }
+
+        return shopItem;
     }
     
     async findProducts(searchTerm: string): Promise<ShopItem[]> {
@@ -47,7 +53,7 @@ export class ShopService {
         item.price = newShopItem.price;
 
         await item.save();
-
+        
         return item;
     }
 

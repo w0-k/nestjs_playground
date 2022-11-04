@@ -12,7 +12,6 @@ export class UsersController {
     async users(
         @Param("pageNumber") pageNumber: string,
     ): Promise<GetPaginatedListOfUsersResponse> {
-        debugger;
         return this.usersService.getUsers(Number(pageNumber));
     }
 }

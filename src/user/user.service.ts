@@ -28,8 +28,17 @@ export class UserService {
     }
 
     async getUser(userId: string): Promise<GetUserResponse> {
-        return await User.findOneBy({
-            id: userId
+        const user = await User.findOne({
+            relations: ["basket"],
+            where: {
+                id: userId
+            }
         });
+
+        if (!user) {
+            throw new Error("User doesn't exist.");
+        }
+
+        return user;
     }
 }

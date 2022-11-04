@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { BasketService } from "./basket.service";
-import { BasketItem } from "../interfaces/basket";
+import { Basket } from './basket.entity';
 import { NewItem } from '../dto/new-item.dto';
 import { Response } from "../interfaces/responses";
 
@@ -13,14 +13,8 @@ export class BasketController {
     @Get("/:userId")
     async getBasket(
         @Param("userId") userId: string,
-    ): Promise<BasketItem[]> {
-        debugger;
+    ): Promise<Basket> {
         return await this.basketService.getBasket(userId);
-    }
-
-    @Get("/total-price")
-    async getTotalPrice(): Promise<number> {
-        return await this.basketService.getTotalPrice();
     }
 
     @Post("/:userId")
@@ -31,10 +25,11 @@ export class BasketController {
         return this.basketService.addItemToBasket(userId, newItem);
     }
 
-    @Delete("/:index")
+    @Delete("/:userId")
     removeFromBasket(
-        @Param("index") index: number,
+        @Param("userId") userId: string,
+        @Query("itemName") itemName: string
     ) {
-        return this.basketService.removeItemFromBasket(index);
+        return this.basketService.removeItemFromBasket(userId, itemName);
     }
 }
