@@ -2,18 +2,13 @@ import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/commo
 import { BasketService } from "./basket.service";
 import { Basket } from './basket.entity';
 import { NewBasketItem } from 'src/interfaces/basket';
-import { Response, StatsResponse } from "../interfaces/responses";
+import { Response } from "../interfaces/responses";
 
 @Controller("/basket")
 export class BasketController {
     constructor(
         private readonly basketService: BasketService
     ) {}
-
-    @Get("/stats")
-    async stats(): Promise<StatsResponse> {
-        return await this.basketService.getStats();
-    }
 
     @Get("/:userId")
     async getBasket(

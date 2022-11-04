@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ShopService } from '../shop/shop.service';
-import { Response, StatsResponse } from '../interfaces/responses';
+import { Response } from '../interfaces/responses';
 import { Basket } from './basket.entity';
 import { UserService } from 'src/user/user.service';
 import { BasketItem } from './basket-item.entity';
@@ -81,13 +81,5 @@ export class BasketService {
             isSuccess: true,
             msg: "Item removed from the basket.",
         };
-    }
-
-    async getStats(): Promise<StatsResponse> {
-        // TODO
-        return {
-            avgItemInBasketCost: 0,
-            avgBasketValue: 0,
-        }
     }
 }
