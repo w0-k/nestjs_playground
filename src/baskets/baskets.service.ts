@@ -12,6 +12,10 @@ export class BasketsService {
     }
 
     async getStats(): Promise<StatsResponse> {
+        let basketsTotalValue = 0;
+        const sumFn = (a: number, b: number) => a + b;
+        const toFixedNum = (value: number) => Number(value.toFixed(2));
+
         const baskets = await Basket.find({
             relations: ["items"]
         });
@@ -22,17 +26,13 @@ export class BasketsService {
             (name) => shopItems.find((shopItem) => shopItem.name === name).price
         ));
 
-        let basketsTotalValue = 0;
-        const sumFn = (a: number, b: number) => a + b;
-
         const avgPricesMap = basketPricesMap.map((basket) => {
             const sum = basket.reduce(sumFn, 0);
             basketsTotalValue += sum;
-            return Number((sum / basket.length).toFixed(2));
+            return toFixedNum(sum / basket.length);
         });
 
         const avgItemCost = avgPricesMap.reduce(sumFn, 0) / avgPricesMap.length;
-        const toFixedNum = (value: number) => Number(value.toFixed(2));
         return {
             avgItemInBasketCost: toFixedNum(avgItemCost),
             avgBasketValue: toFixedNum(basketsTotalValue / baskets.length),
