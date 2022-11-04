@@ -8,7 +8,7 @@ export class BasketsController {
         private readonly basketsService: BasketsService
     ) {}
     
-    @Get()
+    @Get("/")
     async getBaskets(): Promise<Basket[]> {
         return this.basketsService.getBaskets();
     }

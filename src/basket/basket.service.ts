@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ShopService } from '../shop/shop.service';
-import { BasketItem } from '../interfaces/basket';
 import { Response, StatsResponse } from '../interfaces/responses';
 import { Basket } from './basket.entity';
 import { UserService } from 'src/user/user.service';
+import { BasketItem } from './basket-item.entity';
+import { NewBasketItem } from 'src/interfaces/basket';
 
 @Injectable()
 export class BasketService {
@@ -26,7 +27,7 @@ export class BasketService {
         return await this.getBasketById(user.basket.id);
     }
 
-    async addItemToBasket(userId: string, newItem: BasketItem): Promise<Response> {
+    async addItemToBasket(userId: string, newItem: NewBasketItem): Promise<Response> {
         try {
             const shopItem = await this.shopService.getItemByName(newItem.name);    
             const basket = await this.getBasket(userId);
@@ -34,10 +35,14 @@ export class BasketService {
             if (this.isItemInBasket(basket, newItem.name)) {
                 throw new Error("Item already in the basket");
             }
-    
+            
+            const newBasketItem = new BasketItem();
+            newBasketItem.name = shopItem.name;
+            await newBasketItem.save();
+
             basket.items = [
                 ...basket.items,
-                shopItem
+                newBasketItem
             ];
     
             await basket.save();

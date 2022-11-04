@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { BasketService } from "./basket.service";
 import { Basket } from './basket.entity';
-import { NewItem } from '../dto/new-item.dto';
+import { NewBasketItem } from 'src/interfaces/basket';
 import { Response, StatsResponse } from "../interfaces/responses";
 
 @Controller("/basket")
@@ -25,7 +25,7 @@ export class BasketController {
     @Post("/:userId")
     addToBasket(
         @Param("userId") userId: string,
-        @Body() newItem: NewItem,
+        @Body() newItem: NewBasketItem,
     ): Promise<Response> {
         return this.basketService.addItemToBasket(userId, newItem);
     }

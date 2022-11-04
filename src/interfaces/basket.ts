@@ -1,3 +1,3 @@
-export interface BasketItem {
+export interface NewBasketItem {
     name: string;
 }

@@ -30,10 +30,6 @@ export class ShopItem extends BaseEntity {
     })
     createdAt: Date;
 
-    @ManyToMany(type => Basket, entity => entity.items)
-    @JoinTable()
-    baskets: Basket[];
-
     // @Column({
     //     default: false,
     // })
