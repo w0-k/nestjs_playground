@@ -12,6 +12,7 @@ export class BasketsService {
     }
 
     async getStats(): Promise<StatsResponse> {
+        // return new Promise(resolve => {});
         let basketsTotalValue = 0;
         const sumFn = (a: number, b: number) => a + b;
         const toFixedNum = (value: number) => Number(value.toFixed(2));
