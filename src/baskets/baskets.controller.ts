@@ -6,6 +6,7 @@ import { CheckAgePipe } from 'src/pipes/check-age.pipe';
 import { PasswordProtectGuard } from 'src/guards/password-protect-guard';
 import { UsePassword } from 'src/decorators/use-password.decorator';
 import { MyTimeoutInterceptor } from 'src/interceptors/my-timeout.interceptor';
+import { MyCacheInterceptor } from 'src/interceptors/my-cache.interceptor';
 
 @Controller('/baskets')
 export class BasketsController {
@@ -22,7 +23,7 @@ export class BasketsController {
 
     @UseGuards(PasswordProtectGuard)
     @UsePassword("pass")
-    @UseInterceptors(MyTimeoutInterceptor)
+    @UseInterceptors(MyTimeoutInterceptor, MyCacheInterceptor)
     @Get("/stats")
     async stats(): Promise<StatsResponse> {
         return await this.basketsService.getStats();
