@@ -12,6 +12,7 @@ import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
 import { BasketsModule } from './baskets/baskets.module';
 import { CacheModule } from './cache/cache.module';
+import { CronModule } from './cron/cron.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { CacheModule } from './cache/cache.module';
     UserModule,
     BasketsModule,
     CacheModule,
+    CronModule,
   ],
   controllers: [AppController, UsersController],
   providers: [AppService, UsersService],

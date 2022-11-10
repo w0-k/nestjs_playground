@@ -1,10 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class DataCache extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
+    @Index()
     @Column({
         length: 30,
     })
