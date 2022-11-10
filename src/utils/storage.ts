@@ -9,7 +9,7 @@ export function multerStorage(dest: string) {
     return diskStorage({
         destination: (req, file, cb) => cb(null, dest),
         filename: (req, file, cb) => {
-            const fileName = `${uuid()}.${(mime as any).extensions[file.mimetype]}`;
+            const fileName = `${uuid()}.${mime.getExtension(file.mimetype)}`;
             return cb(null, fileName);
         }
     });
