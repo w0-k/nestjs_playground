@@ -17,7 +17,7 @@ export class MyCacheInterceptor implements NestInterceptor {
         const cacheValidityTime =  this.reflector.get<string>("cacheValidityTime", context.getHandler());
         const cachedData = await this.cacheService.readCache(cacheKey);
         const isCacheValid = Number(cachedData?.createdAt ?? 0) + Number(cacheValidityTime) > Date.now();
-        debugger;
+
         // const cachedData = this.reflector.get<any>("cacheData", method);
         // const cachedTime = this.reflector.get<Date>("cacheTime", method);
     

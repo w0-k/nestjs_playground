@@ -1,8 +1,8 @@
-import { Controller, DefaultValuePipe, Get, ImATeapotException, Param, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, /*DefaultValuePipe,*/ Get, ImATeapotException, Param, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Basket } from 'src/basket/basket.entity';
 import { BasketsService } from './baskets.service';
 import { StatsResponse } from "../interfaces/responses";
-import { CheckAgePipe } from 'src/pipes/check-age.pipe';
+// import { CheckAgePipe } from 'src/pipes/check-age.pipe';
 import { PasswordProtectGuard } from 'src/guards/password-protect-guard';
 import { UsePassword } from 'src/decorators/use-password.decorator';
 import { MyTimeoutInterceptor } from 'src/interceptors/my-timeout.interceptor';
