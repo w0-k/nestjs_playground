@@ -11,6 +11,6 @@ export type GetListOfProductsResponse = ItemInterface[];
 export type GetOneProductResponse = ItemInterface;
 export type CreateProductResponse = ItemInterface;
 export type GetPaginatedListOfProductsResponse = {
-    items: ShopItem[];
+    items: ItemInterface[];
     pagesCount: number;
 };

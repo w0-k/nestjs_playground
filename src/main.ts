@@ -12,6 +12,9 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
 
     transform: true,
+    transformOptions: {
+      enableImplicitConversion: true,
+    }
   }));
   app.useGlobalFilters(new GlobalExceptionFilter());
   await app.listen(3000);

@@ -30,6 +30,12 @@ export class ShopItem extends BaseEntity {
     })
     createdAt: Date;
 
+    @Column({
+        default: null,
+        nullable: true
+    })
+    photoFn: string;
+
     // @Column({
     //     default: false,
     // })
