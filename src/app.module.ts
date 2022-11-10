@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
 import { BasketsModule } from './baskets/baskets.module';
+import { CacheModule } from './cache/cache.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { BasketsModule } from './baskets/baskets.module';
     ShopModule,
     UserModule,
     BasketsModule,
+    CacheModule,
   ],
   controllers: [AppController, UsersController],
   providers: [AppService, UsersService],

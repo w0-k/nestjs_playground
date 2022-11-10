@@ -7,6 +7,7 @@ import { PasswordProtectGuard } from 'src/guards/password-protect-guard';
 import { UsePassword } from 'src/decorators/use-password.decorator';
 import { MyTimeoutInterceptor } from 'src/interceptors/my-timeout.interceptor';
 import { MyCacheInterceptor } from 'src/interceptors/my-cache.interceptor';
+import { SetCacheValidityTime } from 'src/decorators/set-cache-validity-time.decorator';
 
 @Controller('/baskets')
 export class BasketsController {
@@ -23,6 +24,7 @@ export class BasketsController {
 
     @UseGuards(PasswordProtectGuard)
     @UsePassword("pass")
+    @SetCacheValidityTime(5000)
     @UseInterceptors(MyTimeoutInterceptor, MyCacheInterceptor)
     @Get("/stats")
     async stats(): Promise<StatsResponse> {
