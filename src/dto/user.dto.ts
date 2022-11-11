@@ -3,4 +3,5 @@ export class NewUser {
     lastName: string;
     email: string;
     phoneNumber: number;
+    pwd: string;
 }

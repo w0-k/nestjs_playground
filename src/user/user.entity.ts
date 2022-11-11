@@ -27,6 +27,15 @@ export class User extends BaseEntity {
     })
     phoneNumber: number;
 
+    @Column()
+    pwdHash: string;
+
+    @Column({
+        nullable: true,
+        default: null,
+    })
+    currentTokenId: string;
+
     @OneToOne(type => Basket/*, { eager: true }*/)
     @JoinColumn()
     basket: Basket;

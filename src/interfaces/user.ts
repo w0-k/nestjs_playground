@@ -1,7 +1,16 @@
 import { User } from "src/user/user.entity";
 
-export type GetUserResponse = User;
-export type CreateUserRepsonse = User;
+type PublicUserData = {
+    id: string;
+    email: string;
+    name: string;
+    basket: {
+        id: string;
+    }
+};
+
+export type GetUserResponse = PublicUserData;
+export type CreateUserRepsonse = PublicUserData;
 export type GetListOfUsers = User[];
 export type GetPaginatedListOfUsersResponse = {
     users: User[];
