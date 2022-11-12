@@ -23,11 +23,19 @@ export class AuthService {
         }
     }
 
-    private generateToken() {
-        let token;
+    private async generateToken(user: User): Promise<string> {
+        let token: string;
         let userWithThisToken = null;
 
-        
+        do {
+            token = uuid();
+            userWithThisToken = await User.findOneBy({ currentTokenId: token });
+        } while(!userWithThisToken);
+
+        user.currentTokenId = token;
+        await user.save();
+
+        return token;
     }   
 
     async login(req: AuthLoginDto, res: Response): Promise<any> {
@@ -43,7 +51,7 @@ export class AuthService {
 
             const token = await this.createToken(await this.generateToken(user));
 
-            return res.cookie("jwt", token.accesToken, {
+            return res.cookie("jwt", token.accessToken, {
                 secure: false,
                 domain: "localhost",
                 httpOnly: true,

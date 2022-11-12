@@ -17,7 +17,7 @@ async function bootstrap() {
       enableImplicitConversion: true,
     }
   }));
-  app.useGlobalFilters(new GlobalExceptionFilter());
+  // app.useGlobalFilters(new GlobalExceptionFilter());
   app.use(cookieParser());
   await app.listen(3000);
 }
