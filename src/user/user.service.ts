@@ -15,7 +15,6 @@ export class UserService {
     });
 
     async addUser(newUser: NewUser): Promise<CreateUserRepsonse> {
-        debugger;
         const user = new User();
         user.name = newUser.name;
         user.lastName = newUser.lastName;

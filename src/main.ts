@@ -6,17 +6,17 @@ import * as cookieParser from "cookie-parser";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({
-    disableErrorMessages: true,
+  // app.useGlobalPipes(new ValidationPipe({
+  //   disableErrorMessages: true,
 
-    whitelist: true,
-    forbidNonWhitelisted: true,
+  //   whitelist: true,
+  //   forbidNonWhitelisted: true,
 
-    transform: true,
-    transformOptions: {
-      enableImplicitConversion: true,
-    }
-  }));
+  //   transform: true,
+  //   transformOptions: {
+  //     enableImplicitConversion: true,
+  //   }
+  // }));
   // app.useGlobalFilters(new GlobalExceptionFilter());
   app.use(cookieParser());
   await app.listen(3000);
