@@ -30,7 +30,7 @@ export class AuthService {
         do {
             token = uuid();
             userWithThisToken = await User.findOneBy({ currentTokenId: token });
-        } while(!userWithThisToken);
+        } while(Boolean(userWithThisToken));
 
         user.currentTokenId = token;
         await user.save();
@@ -57,6 +57,26 @@ export class AuthService {
                 httpOnly: true,
             })
             .json({ ok: true });
+        } catch(e) {
+            return res.json({ error: e.message });
+        }
+    }
+
+    async logout(user: User, res: Response<any, Record<string, any>>) {
+        try {
+            user.currentTokenId = null;
+            await user.save();
+
+            res.clearCookie(
+                "jwt",
+                {
+                    secure: false,
+                    domain: "localhost",
+                    httpOnly: true,
+                }
+            ).json({
+                ok: true
+            });
         } catch(e) {
             return res.json({ error: e.message });
         }

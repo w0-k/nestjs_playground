@@ -29,9 +29,10 @@ export class BasketService {
 
     async addItemToBasket(userId: string, newItem: NewBasketItem): Promise<Response> {
         try {
+            debugger;
             const shopItem = await this.shopService.getItemByName(newItem.name);    
             const basket = await this.getBasket(userId);
-    
+            debugger;
             if (this.isItemInBasket(basket, newItem.name)) {
                 throw new Error("Item already in the basket");
             }

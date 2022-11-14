@@ -1,8 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { BasketService } from "./basket.service";
 import { Basket } from './basket.entity';
 import { NewBasketItem } from 'src/interfaces/basket';
 import { Response } from "../interfaces/responses";
+import { AuthGuard } from '@nestjs/passport';
+import { UserObj } from 'src/decorators/user-object.decorator';
+import { User } from 'src/user/user.entity';
 
 @Controller("/basket")
 export class BasketController {
@@ -10,26 +13,29 @@ export class BasketController {
         private readonly basketService: BasketService
     ) {}
 
-    @Get("/:userId")
+    @Get("/")
+    @UseGuards(AuthGuard("jwt"))
     async getBasket(
-        @Param("userId") userId: string,
+        @UserObj() user: User,
     ): Promise<Basket> {
-        return await this.basketService.getBasket(userId);
+        return await this.basketService.getBasket(user.id);
     }
 
-    @Post("/:userId")
+    @Post("/")
+    @UseGuards(AuthGuard("jwt"))
     addToBasket(
-        @Param("userId") userId: string,
         @Body() newItem: NewBasketItem,
+        @UserObj() user: User,
     ): Promise<Response> {
-        return this.basketService.addItemToBasket(userId, newItem);
+        return this.basketService.addItemToBasket(user.id, newItem);
     }
 
-    @Delete("/:userId")
+    @Delete("/")
+    @UseGuards(AuthGuard("jwt"))
     removeFromBasket(
-        @Param("userId") userId: string,
-        @Query("itemName") itemName: string
+        @Query("itemName") itemName: string,
+        @UserObj() user: User,
     ) {
-        return this.basketService.removeItemFromBasket(userId, itemName);
+        return this.basketService.removeItemFromBasket(user.id, itemName);
     }
 }

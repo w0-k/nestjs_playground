@@ -63,9 +63,10 @@ export class ShopService {
     }
 
     async getItemByName(name: string): Promise<ShopItem> {
-        const shopItem = await ShopItem.findOneBy({ name });
-
+        const shopItem = await ShopItem.findOneByOrFail({ name });
+        debugger;
         if (!shopItem) {
+            debugger;
             throw new Error("Item not available in the shop.");
         }
 

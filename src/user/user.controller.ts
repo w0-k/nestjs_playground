@@ -19,7 +19,6 @@ export class UserController {
     async addUser(
         @Body() newUser: NewUser
     ): Promise<CreateUserRepsonse> {
-        debugger;
         return this.userService.addUser(newUser);
     }
 }
